@@ -23,7 +23,7 @@ body:
     attributes:
       label: Repository
       description: Repository being bootstrapped.
-      placeholder: Ravnen
+      placeholder: repo name
 
     validations:
       required: true
@@ -34,7 +34,7 @@ body:
       label: Engineering Objective
       description: Why is this repository being bootstrapped?
       placeholder: >
-        Replace Oracle with PostgreSQL while preserving business behaviour.
+        Test using AI to develop the .Net MVC app using spec driven development
 
     validations:
       required: true
@@ -46,6 +46,7 @@ body:
       options:
         - Legacy .NET Framework
         - Modern .NET
+        - MVC .Net
         - Angular
         - Full Stack
         - Library
