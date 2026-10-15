@@ -1,5 +1,5 @@
 name: Bootstrap Repository
-description: Bootstrap a repository for VibeOS engineering by generating Repository Context, Runtime Context and identifying applicable Engineering Standards.
+description: Bootstrap a repository for Spec-driven Development by generating Repository Context, Runtime Context and identifying applicable Engineering Standards.
 title: '[Bootstrap]: <Repository Name>'
 labels:
   - bootstrap

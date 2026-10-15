@@ -1,0 +1,510 @@
+name: New Web Application
+description: Capture requirements, mobile-friendly design preferences and constraints for a new web application before discovery and specification.
+title: '[New Web Application]: <Application Name>'
+labels:
+  - discovery
+  - architecture
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # New Web Application Requirements
+
+        Use this form to describe a new mobile-friendly web application.
+        This is requirements intake, not approval to scaffold or implement.
+        Discovery, approved Specifications and approved Planning must precede implementation.
+
+        Select preferences, not automatic feature commitments. Mark undecided answers
+        as `Unknown` or `Requires Human Confirmation`. Use `Not applicable` with a reason
+        where appropriate. Never include passwords, tokens, secrets or personal data.
+
+  - type: input
+    id: application_name
+    attributes:
+      label: Application Name
+      placeholder: Timesheet Application
+    validations:
+      required: true
+
+  - type: textarea
+    id: business_objective
+    attributes:
+      label: Business Purpose and Success Measures
+      description: Explain the problem, intended value and measurable business outcomes.
+      placeholder: Help employees record time against projects and let managers approve timesheets without manual spreadsheet coordination.
+    validations:
+      required: true
+
+  - type: textarea
+    id: audience_workflows
+    attributes:
+      label: Target Users and Main Workflows
+      description: Describe user groups, age ranges, primary tasks and who owns each workflow.
+      placeholder: |
+        Employees record project hours and submit timesheets.
+        Managers review and approve team timesheets.
+        Administrators manage access.
+    validations:
+      required: true
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: MVP Scope and Exclusions
+      description: Separate launch requirements, future work and explicitly excluded features.
+      placeholder: |
+        MVP:
+        Future work:
+        Out of scope:
+    validations:
+      required: true
+
+  - type: textarea
+    id: repository_context
+    attributes:
+      label: Repository, Discovery Inputs and Standards
+      description: |
+        Reference the target repository, existing code, .ai/context/repository/,
+        .ai/context/runtime/, docs/ENGINEERING.md and applicable .ai/playbooks/.
+        For an empty repository, state that no application runtime exists.
+        Missing context remains a discovery prerequisite; do not invent it.
+      placeholder: |
+        Target repository:
+        Existing code or starter:
+        Repository Context:
+        Runtime Context or observed limitation:
+        Applicable standards:
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ## Technology and Architecture
+
+        Angular and React are UI framework choices. MVC is a presentation pattern;
+        it can coexist with business and data-access layers. Framework versions and
+        architectural decisions must be confirmed rather than silently selected.
+
+  - type: dropdown
+    id: frontend
+    attributes:
+      label: Preferred UI Technology
+      options:
+        - Angular
+        - React
+        - Server-rendered MVC views
+        - Requires Human Confirmation
+        - Another technology - describe below
+    validations:
+      required: true
+
+  - type: dropdown
+    id: backend
+    attributes:
+      label: Preferred Backend Technology
+      options:
+        - ASP.NET Core
+        - Node.js
+        - Java Spring
+        - Python web framework
+        - Managed backend service
+        - Requires Human Confirmation
+        - Another technology - describe below
+    validations:
+      required: true
+
+  - type: dropdown
+    id: database
+    attributes:
+      label: Preferred Database
+      options:
+        - PostgreSQL
+        - SQL Server
+        - MySQL
+        - SQLite
+        - NoSQL database - describe below
+        - Requires Human Confirmation
+        - Another database or no database - explain below
+    validations:
+      required: true
+
+  - type: dropdown
+    id: rendering
+    attributes:
+      label: Rendering Approach
+      options:
+        - Single-page application
+        - Server-rendered pages
+        - Hybrid rendering
+        - Requires Human Confirmation
+    validations:
+      required: true
+
+  - type: textarea
+    id: architecture_constraints
+    attributes:
+      label: Architecture, Versions and Technical Constraints
+      description: |
+        Identify fixed decisions versus preferences, supported versions, licensing,
+        hosting restrictions and existing systems to preserve. Define responsibilities
+        for UI/views, controllers/API, business services, data access and database.
+        State whether a layered modular monolith is suitable or another approach needs review.
+      placeholder: |
+        Fixed decisions:
+        Preferences and alternatives:
+        Framework/runtime versions:
+        Layer responsibilities and dependency boundaries:
+        Validation, authorization and transaction boundaries:
+        Constraints:
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ## Visual Theme and Mobile Experience
+
+        Theme describes the visual direction, not an automatic requirement for social
+        networking, payments, streaming or child accounts. Define those capabilities
+        explicitly in MVP scope if needed. Do not copy protected branding or assets.
+
+  - type: dropdown
+    id: visual_theme
+    attributes:
+      label: Primary Visual Theme
+      options:
+        - Business / corporate
+        - Social / community
+        - Kids / playful
+        - Movie / entertainment
+        - Education / learning
+        - Shopping / retail
+        - Health / wellness
+        - News / editorial
+        - Minimal / neutral
+        - Requires Human Confirmation
+        - Custom or mixed theme - describe below
+    validations:
+      required: true
+
+  - type: textarea
+    id: branding
+    attributes:
+      label: Branding and Theme Details
+      description: |
+        Describe colors, typography, layout density, imagery, tone, light/dark modes,
+        motion preferences and an existing design system or component library.
+        Link inspiration and approved assets; specify asset ownership and licensing.
+      placeholder: |
+        Visual direction:
+        Colors, typography and tone:
+        Light/dark mode:
+        Design system or component library:
+        Reference links and licensed assets:
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: mobile_capabilities
+    attributes:
+      label: Mobile and Device Capabilities to Consider
+      description: Only checked capabilities are candidates for scope; confirm them in the specification.
+      options:
+        - label: Mobile-first responsive layouts
+        - label: Touch-friendly navigation and controls
+        - label: Responsive tables, forms and media
+        - label: Tablet and desktop layouts
+        - label: Installable progressive web app (PWA)
+        - label: Offline reading or offline workflows
+        - label: Push notifications
+        - label: Camera or file capture
+        - label: Location access
+        - label: Reduced-motion support
+
+  - type: textarea
+    id: mobile_acceptance
+    attributes:
+      label: Mobile, Browser and Accessibility Acceptance
+      description: |
+        Mobile-friendly behavior is required. Specify supported devices/browsers,
+        minimum viewport, orientations, zoom, touch-target sizes, keyboard behavior,
+        screen-reader support and accessibility target (for example WCAG 2.2 AA).
+        Describe narrow-screen navigation, tables, forms, virtual-keyboard behavior
+        and exceptions to no horizontal page scrolling.
+        If offline/PWA/device features are selected, define permission denial,
+        unavailable APIs, cached sensitive data and offline synchronization behavior.
+      placeholder: |
+        Supported devices and browsers:
+        Viewport range and orientations:
+        Navigation, touch targets and responsive content:
+        Accessibility target and validation:
+        Offline/device capability behavior or Not applicable:
+    validations:
+      required: true
+
+  - type: textarea
+    id: screens_localization
+    attributes:
+      label: Screens, Navigation and Localization
+      description: Include main screens, routes, loading/empty/error/access-denied states, languages, time zones and formatting.
+      placeholder: |
+        Screens and navigation:
+        Loading, empty, error and access-denied states:
+        Languages, right-to-left support and formats:
+        Time-zone behavior:
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ## Identity, Authorization and Privacy
+
+        Authentication identifies a user; authorization controls permitted actions.
+        With SSO, credentials stay with the identity provider. The application database
+        can store external identity mappings, profiles, roles and permissions, not SSO
+        passwords. Backend authorization is mandatory for protected operations;
+        hiding UI controls alone is insufficient.
+
+  - type: dropdown
+    id: authentication
+    attributes:
+      label: Authentication Approach
+      options:
+        - SSO only
+        - SSO with approved local-account fallback
+        - Local accounts only
+        - Public application without sign-in
+        - Requires Human Confirmation
+    validations:
+      required: true
+
+  - type: textarea
+    id: identity_lifecycle
+    attributes:
+      label: Identity Provider and Account Lifecycle
+      description: |
+        Name the SSO provider (for example Microsoft Entra ID or Okta), expected
+        OIDC/OAuth 2.0 or SAML integration, internal/external users, MFA, provisioning,
+        account linking, deactivation, recovery, session expiry and logout requirements.
+        For local accounts, specify credential protection and abuse-prevention requirements.
+        Do not supply credentials or tenant secrets.
+      placeholder: |
+        Identity provider and protocol:
+        User populations and MFA:
+        Provisioning, linking and deactivation:
+        Session, logout and recovery:
+        Local accounts or Not applicable:
+    validations:
+      required: true
+
+  - type: textarea
+    id: authorization
+    attributes:
+      label: Database-Backed Authorization and Access Rules
+      description: |
+        Define roles, permissions, user mappings and whether the database or an external
+        service is authoritative. Include record/tenant-level rules, deny-by-default
+        behavior, access administration, revocation timing and audit requirements.
+        Explain exceptions if database-backed authorization is not applicable.
+      placeholder: |
+        Role | Allowed actions | Record/tenant restrictions
+        Authorization source and database-stored mappings:
+        Who grants/revokes access:
+        Revocation timing and audit:
+    validations:
+      required: true
+
+  - type: dropdown
+    id: tenancy
+    attributes:
+      label: Organization and Tenant Model
+      options:
+        - Single organization
+        - Multi-tenant with isolated organization data
+        - Public consumer application
+        - Requires Human Confirmation
+    validations:
+      required: true
+
+  - type: textarea
+    id: security_privacy
+    attributes:
+      label: Security, Privacy and Compliance Requirements
+      description: |
+        Identify sensitive data, applicable standards, threat considerations, encryption,
+        secrets management, input validation, upload safety, rate limits and applicable
+        CSRF, XSS, injection and CORS controls. Cover audit trails and log redaction.
+        For children or user-generated content, confirm age-related privacy obligations,
+        parental consent where applicable, moderation, reporting and abuse handling.
+        A playful theme alone does not establish that the service targets children.
+      placeholder: |
+        Data classification and applicable obligations:
+        Security controls and review expectations:
+        Audit events and sensitive-data redaction:
+        Child safety, consent and moderation or Not applicable:
+    validations:
+      required: true
+
+  - type: textarea
+    id: data_requirements
+    attributes:
+      label: Data Model and Business Rules
+      description: |
+        List entities, relationships, ownership, validation, transactions, concurrency,
+        search/reporting needs, retention, archival, deletion and import/migration needs.
+        Include tenant isolation where applicable. Use synthetic examples only.
+      placeholder: |
+        Entities and relationships:
+        Business rules and ownership:
+        Transactions and concurrent updates:
+        Retention, archival and deletion:
+        Imports, exports and migration:
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: integrations
+    attributes:
+      label: Integration Capabilities to Consider
+      description: Selection requires explicit scope and acceptance criteria; it does not authorize implementation.
+      options:
+        - label: External APIs or webhooks
+        - label: Email or SMS
+        - label: In-app notifications
+        - label: File uploads and downloads
+        - label: Payments or subscriptions
+        - label: Search service
+        - label: Analytics or consent management
+        - label: Background jobs or scheduled work
+        - label: Real-time updates or messaging
+        - label: Media hosting or playback
+
+  - type: textarea
+    id: integration_details
+    attributes:
+      label: API and Integration Contracts
+      description: |
+        For each integration, identify its owner, contract, authentication, data exchanged,
+        limits, timeouts, failure behavior, retries and duplicate-request handling.
+        Include file size/type limits and notification delivery expectations where relevant.
+        State Not applicable if no integrations are required.
+
+  - type: textarea
+    id: performance
+    attributes:
+      label: Performance, Capacity and Availability
+      description: Define measurable targets and how they will be measured, including mobile network conditions.
+      placeholder: |
+        Expected users, concurrent usage and data volume:
+        Page-load and interaction targets on representative mobile devices/networks:
+        API response-time percentiles and workload:
+        Availability target and expected growth:
+        Measurement method and representative test data:
+    validations:
+      required: true
+
+  - type: textarea
+    id: deployment
+    attributes:
+      label: Hosting, Delivery and Operations
+      description: |
+        Specify cloud/on-premises hosting, environments, domain/TLS, configuration,
+        secrets, CI/CD, approval gates, database migrations, deployment rollback,
+        logs, metrics, alerts, health checks and operational ownership.
+        Define backup/restore expectations, recovery time and acceptable data loss.
+      placeholder: |
+        Hosting, environments and domain/TLS:
+        CI/CD, configuration and approval gates:
+        Database migrations and rollback:
+        Observability and support ownership:
+        Backup/restore, recovery time and acceptable data loss:
+    validations:
+      required: true
+
+  - type: textarea
+    id: testing
+    attributes:
+      label: Testing and Definition of Done
+      description: |
+        Define unit, integration and end-to-end coverage; positive/negative permission
+        tests; tenant-isolation tests if applicable; responsive, accessibility, security
+        and performance validation; synthetic test data; and required evidence.
+      placeholder: |
+        Test scope and critical workflows:
+        Permission and isolation tests:
+        Mobile/browser/accessibility validation:
+        Security and performance validation:
+        Test data, evidence and definition of done:
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Workflow Acceptance Criteria
+      description: Include observable outcomes, permission-denied cases and mobile behavior for each MVP capability.
+      placeholder: |
+        Given:
+        When:
+        Then:
+        Mobile acceptance:
+        Unauthorized/invalid-input behavior:
+    validations:
+      required: true
+
+  - type: textarea
+    id: constraints_unknowns
+    attributes:
+      label: Constraints, Risks and Decisions Requiring Approval
+      description: Include budget, timeline, team skills, dependencies, assumptions, unknowns and named decision owners where known.
+      placeholder: |
+        Constraints and dependencies:
+        Risks:
+        Unknown:
+        Requires Human Confirmation:
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ## AI Instructions and Expected Deliverables
+
+        - Inspect the target repository and existing knowledge before drawing conclusions.
+        - Read applicable Engineering Standards; do not invent missing standards.
+        - Separate confirmed requirements, proposed decisions and Unknown information.
+        - Identify conflicts, missing inputs, risks and Requires Human Confirmation items.
+        - Complete discovery before specifications. If required context is missing,
+          stop the specification handoff and recommend the appropriate discovery stage.
+        - For an empty repository, record that no runtime exists. Do not fabricate
+          observed behavior or silently waive Architect preconditions; request human
+          confirmation of the greenfield discovery approach before proceeding.
+        - Capture technology and architecture constraints and alternatives for approval.
+          Prefer the simplest suitable approach; detailed implementation strategy
+          belongs to the Planner, not requirements intake or the Architect.
+        - Treat theme and capability selections as preferences to reconcile with MVP scope.
+          Never silently add features or expand scope.
+        - Produce a requirements summary, capability inventory, screen/integration inventory,
+          conceptual data/access requirements, measurable acceptance criteria, risks
+          and an open-decision register in the issue or approved discovery artifacts.
+        - After discovery is accepted, create a separate Engineering Specification issue
+          for each independently deliverable Business Capability. Store its approved
+          specification.md under .ai/specifications/<spec-id>/ and link it to this issue.
+        - Do not scaffold, implement, create implementation tasks or deploy from this issue.
+          Obtain human specification approval before Planning and plan approval before
+          Implementation. Preserve traceability through Review and Validation.
+
+        ## Intake Completion Criteria
+
+        - MVP scope, exclusions, users and workflows are explicit.
+        - Technology preferences and layer boundaries are captured.
+        - Theme, mobile behavior and accessibility expectations are testable.
+        - Identity, database-backed authorization, data and privacy requirements are captured.
+        - Integrations, quality targets, operations and validation expectations are captured.
+        - Unknowns have explicit follow-up decisions rather than invented answers.
+        - Discovery prerequisites and approval gates are identified, not bypassed.
+        - Human review confirms readiness for the next stage; intake completion is not
+          specification approval or permission to implement.

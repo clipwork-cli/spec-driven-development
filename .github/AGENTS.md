@@ -1,4 +1,4 @@
-# VibeOS AI Agent Guide
+# Spec-driven Development AI Agent Guide
 
 This repository uses an issue-driven, spec-driven workflow for modernization and Oracle to PostgreSQL migration.
 
@@ -45,6 +45,7 @@ Validation
 GitHub Issues are the orchestration layer. Use these templates:
 
 - `.github/ISSUE_TEMPLATE/bootstrap.yml`
+- `.github/ISSUE_TEMPLATE/new-web-application.yml`
 - `.github/ISSUE_TEMPLATE/specification.yml`
 - `.github/ISSUE_TEMPLATE/planning.yml`
 - `.github/ISSUE_TEMPLATE/implementation.yml`
@@ -60,6 +61,16 @@ Expected flow:
 5. Implementation issues execute one work item at a time.
 6. Bugfix issues resolve one verified defect within an approved specification boundary.
 7. Review issues validate against specification, plan, standards, and evidence.
+
+For a new mobile-friendly web application, start with
+[`new-web-application.yml`](ISSUE_TEMPLATE/new-web-application.yml) to capture business
+scope, technology preferences, visual theme, responsive/accessibility requirements,
+identity and database-backed authorization, data, integrations, operations and acceptance
+criteria. This is requirements intake, not a replacement for Bootstrap or approval to
+implement. Complete discovery before creating one Specification issue per capability.
+For an empty repository, record that runtime behavior is unavailable and request human
+confirmation of the discovery approach; do not fabricate Runtime Context or bypass
+agent preconditions.
 
 ---
 
