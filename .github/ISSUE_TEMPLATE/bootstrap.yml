@@ -1,0 +1,134 @@
+name: Bootstrap Repository
+description: Bootstrap a repository for VibeOS engineering by generating Repository Context, Runtime Context and identifying applicable Engineering Standards.
+title: '[Bootstrap]: <Repository Name>'
+labels:
+  - bootstrap
+  - discovery
+  - architecture
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # Repository Bootstrap
+
+        Bootstrap prepares a repository for engineering work.
+
+        This issue generates the engineering knowledge required before Specifications, Planning and Implementation can begin.
+
+        Do not use this template for feature work.
+
+  - type: input
+    id: repository
+    attributes:
+      label: Repository
+      description: Repository being bootstrapped.
+      placeholder: Ravnen
+
+    validations:
+      required: true
+
+  - type: textarea
+    id: objective
+    attributes:
+      label: Engineering Objective
+      description: Why is this repository being bootstrapped?
+      placeholder: >
+        Replace Oracle with PostgreSQL while preserving business behaviour.
+
+    validations:
+      required: true
+
+  - type: dropdown
+    id: repository_type
+    attributes:
+      label: Repository Type
+      options:
+        - Legacy .NET Framework
+        - Modern .NET
+        - Angular
+        - Full Stack
+        - Library
+        - API
+        - Worker
+        - Other
+
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: engineering_standards
+    attributes:
+      label: Applicable Engineering Standards
+
+      options:
+        - label: Oracle → PostgreSQL
+        - label: Modernization
+        - label: Framework Upgrade
+        - label: Testcontainers
+        - label: API Design
+        - label: Security
+        - label: Performance
+
+  - type: textarea
+    id: assumptions
+    attributes:
+      label: Known Assumptions
+      description: |
+        Examples
+
+        • PostgreSQL schema already translated
+
+        • Oracle schema available
+
+        • Testcontainers unavailable
+
+        • Local Docker available
+
+  - type: checkboxes
+    id: discovery
+    attributes:
+      label: Discovery Activities
+
+      options:
+        - label: Generate Repository Context
+        - label: Generate Runtime Context
+        - label: Identify Business Capabilities
+        - label: Identify Oracle Usage
+        - label: Identify Modernization Opportunities
+
+    validations:
+      required: true
+
+  - type: textarea
+    id: output
+    attributes:
+      label: Expected Deliverables
+
+      value: |
+        Repository Context
+
+        Runtime Context
+
+        Engineering Standards
+
+        Repository Assessment
+
+        Modernization Assessment
+
+        Business Capability Inventory
+
+        Oracle Dependency Inventory
+
+  - type: markdown
+    attributes:
+      value: |
+
+        ## Success Criteria
+
+        - Repository Context generated
+        - Runtime Context generated
+        - Applicable Engineering Standards identified
+        - Business Capabilities identified
+        - Oracle usage identified
+        - Repository ready for Specification generation

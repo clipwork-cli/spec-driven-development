@@ -1,0 +1,169 @@
+name: Bugfix
+description: Resolve one verified defect within an approved Specification boundary. This issue is owned by the Bugfix Agent.
+title: '[Bugfix]: <Business Capability> - <Defect Summary>'
+labels:
+  - bugfix
+  - developer
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # Bugfix
+
+        This issue resolves a single verified defect.
+
+        The Bugfix Agent preserves approved architecture and scope.
+
+        Do not redesign architecture during bugfixing.
+
+  - type: input
+    id: capability
+    attributes:
+      label: Business Capability
+      placeholder: Asset Search
+    validations:
+      required: true
+
+  - type: input
+    id: specification
+    attributes:
+      label: Related Specification
+      description: Reference the governing specification (for example SPEC-001).
+      placeholder: SPEC-001
+    validations:
+      required: true
+
+  - type: input
+    id: source
+    attributes:
+      label: Source Reference
+      description: Link the originating issue, review finding, PR comment, or incident.
+      placeholder: https://github.com/<owner>/<repo>/issues/123
+    validations:
+      required: true
+
+  - type: dropdown
+    id: defect_type
+    attributes:
+      label: Defect Type
+      options:
+        - Regression
+        - Functional Defect
+        - Data Defect
+        - Integration Defect
+        - Performance Defect
+        - Security Defect
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro_steps
+    attributes:
+      label: Reproduction Steps
+      description: Provide deterministic reproduction steps.
+      placeholder: |
+        1. ...
+        2. ...
+        3. ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected_vs_actual
+    attributes:
+      label: Expected vs Actual Behaviour
+      placeholder: |
+        Expected:
+        ...
+
+        Actual:
+        ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: impact
+    attributes:
+      label: Impact and Risk
+      description: Describe user/business impact and engineering risk.
+      placeholder: |
+        Impact:
+        ...
+
+        Risk:
+        ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: repository_context
+    attributes:
+      label: Repository Context References
+      description: Reference relevant files from .ai/context/repository/.
+      placeholder: database.md, architecture.md, testing.md
+
+  - type: textarea
+    id: runtime_context
+    attributes:
+      label: Runtime Context References
+      description: Reference relevant files from .ai/context/runtime/.
+      placeholder: capabilities.md, runtime-flow.md, data-flow.md
+
+  - type: textarea
+    id: engineering_standards
+    attributes:
+      label: Applicable Engineering Standards
+      description: List applicable standards from .ai/playbooks/.
+      placeholder: Oracle → PostgreSQL, Modernization
+    validations:
+      required: true
+
+  - type: textarea
+    id: assumptions
+    attributes:
+      label: Assumptions and Unknowns
+      description: Use "Unknown" or "Requires Human Confirmation" where needed.
+
+  - type: markdown
+    attributes:
+      value: |
+        ## Bugfix Deliverables
+
+        Produce
+
+        ```
+        Source Code
+
+        Updated Tests
+
+        Validation Evidence
+
+        Pull Request
+        ```
+
+  - type: markdown
+    attributes:
+      value: |
+        ## Bugfix Rules
+
+        - Fix one defect only.
+        - Preserve approved architecture.
+        - Preserve repository and runtime behaviour outside the defect.
+        - Do not expand scope silently.
+        - Follow applicable Engineering Standards.
+
+  - type: markdown
+    attributes:
+      value: |
+        ## Success Criteria
+
+        ✓ Defect reproduced
+
+        ✓ Root cause addressed
+
+        ✓ Behaviour verified with tests/evidence
+
+        ✓ No unrelated scope expansion
+
+        ✓ Pull Request ready for Review

@@ -1,0 +1,138 @@
+name: Engineering Review
+description: Validate an implemented Execution Work Item against the approved Specification, Implementation Plan and Engineering Standards. This issue is owned by the Reviewer.
+title: '[Review]: <Execution Work Item>'
+labels:
+  - review
+  - reviewer
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # Engineering Review
+
+        This issue validates a completed implementation.
+
+        The Reviewer validates engineering quality before human approval.
+
+        This issue does not modify production code.
+
+  - type: input
+    id: capability
+    attributes:
+      label: Business Capability
+      placeholder: Asset Search
+    validations:
+      required: true
+
+  - type: input
+    id: workitem
+    attributes:
+      label: Execution Work Item
+      placeholder: P2-003 - Replace OracleConnection with NpgsqlConnection
+    validations:
+      required: true
+
+  - type: input
+    id: implementation_issue
+    attributes:
+      label: Implementation Issue
+      description: Reference the completed Implementation Issue.
+    validations:
+      required: true
+
+  - type: input
+    id: pull_request
+    attributes:
+      label: Pull Request
+      description: Reference the Pull Request for review.
+    validations:
+      required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        ## Review Inputs
+
+        Validate the following
+
+        - Feature Context
+        - Specification
+        - Implementation Plan
+        - Execution Work Item
+        - Source Code
+        - Tests
+        - Documentation
+        - Validation Evidence
+        - Pull Request
+
+  - type: markdown
+    attributes:
+      value: |
+        ## Review Responsibilities
+
+        Validate
+
+        - Specification compliance
+        - Repository behaviour
+        - Engineering Standards
+        - Documentation
+        - Tests
+        - Validation evidence
+
+        Do not redesign architecture.
+
+        Do not expand scope.
+
+        Do not implement missing functionality.
+
+  - type: markdown
+    attributes:
+      value: |
+        ## Review Deliverables
+
+        Produce
+
+        ```
+        review.md
+
+        Engineering Findings
+
+        Recommendation
+
+        Review Outcome
+        ```
+
+  - type: dropdown
+    id: recommendation
+    attributes:
+      label: Expected Recommendation
+      options:
+        - Approve
+        - Approve with Recommendations
+        - Changes Required
+        - Return to Planner
+        - Return to Architect
+
+  - type: markdown
+    attributes:
+      value: |
+        ## Success Criteria
+
+        ✓ Specification validated
+
+        ✓ Plan validated
+
+        ✓ Engineering Standards validated
+
+        ✓ Repository behaviour validated
+
+        ✓ Documentation validated
+
+        ✓ Tests validated
+
+        ✓ Engineering evidence validated
+
+        ✓ Recommendation produced
+
+        ✓ Ready for Human Approval

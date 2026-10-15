@@ -1,0 +1,132 @@
+name: Engineering Specification
+description: Generate one Specification for a single Business Capability using Repository Context, Runtime Context and applicable Engineering Standards.
+title: '[Specification]: <Business Capability>'
+labels:
+  - specification
+  - architect
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # Engineering Specification
+
+        This issue defines engineering scope for one Business Capability.
+
+        Specifications define **what** should be implemented.
+
+        Implementation decisions belong to Planning.
+
+  - type: input
+    id: capability
+    attributes:
+      label: Business Capability
+      placeholder: Asset Search
+    validations:
+      required: true
+
+  - type: textarea
+    id: objective
+    attributes:
+      label: Engineering Objective
+      description: Describe the intended engineering outcome.
+      placeholder: Migrate Asset Search from Oracle to PostgreSQL while preserving business behaviour.
+    validations:
+      required: true
+
+  - type: textarea
+    id: repository_context
+    attributes:
+      label: Repository Context References
+      description: Reference relevant files from .ai/context/repository/.
+      placeholder: architecture.md, projects.md, dependencies.md, database.md, testing.md
+    validations:
+      required: true
+
+  - type: textarea
+    id: runtime_context
+    attributes:
+      label: Runtime Context References
+      description: Reference relevant files from .ai/context/runtime/.
+      placeholder: capabilities.md, runtime-flow.md, integrations.md, operations.md, data-flow.md
+    validations:
+      required: true
+
+  - type: textarea
+    id: engineering_standards
+    attributes:
+      label: Applicable Engineering Standards
+      description: List applicable standards from .ai/playbooks/.
+      placeholder: Oracle → PostgreSQL, Modernization
+    validations:
+      required: true
+
+  - type: textarea
+    id: schema_inputs
+    attributes:
+      label: Schema Input References
+      description: |
+        For Oracle → PostgreSQL work, reference schema input files.
+
+        Shared inputs should come from .ai/context/repository/database/.
+
+        Capability-specific inputs should come from .ai/specifications/<spec-id>/schema/.
+      placeholder: |
+        .ai/context/repository/database/schema.sql
+        .ai/context/repository/database/constraints.sql
+        .ai/specifications/SPEC-001/schema/asset-search-view.sql
+
+  - type: textarea
+    id: scope_included
+    attributes:
+      label: In Scope
+      description: List what this Specification includes.
+      placeholder: Repository layer, capability SQL, integration tests, validation evidence
+    validations:
+      required: true
+
+  - type: textarea
+    id: scope_excluded
+    attributes:
+      label: Out of Scope
+      description: List what this Specification explicitly excludes.
+      placeholder: Data migration, schema redesign, unrelated capabilities
+    validations:
+      required: true
+
+  - type: textarea
+    id: risks
+    attributes:
+      label: Risks
+      description: List engineering risks and known constraints.
+
+  - type: textarea
+    id: assumptions
+    attributes:
+      label: Assumptions
+      description: Document assumptions and unknowns. Use "Unknown" or "Requires Human Confirmation" where applicable.
+
+  - type: markdown
+    attributes:
+      value: |
+        ## Architect Deliverables
+
+        Produce
+
+        ```
+        specification.md
+        ```
+
+        Then hand off to Planning.
+
+  - type: markdown
+    attributes:
+      value: |
+        ## Success Criteria
+
+        - Scope defined for one Business Capability
+        - Repository Context references captured
+        - Runtime Context references captured
+        - Applicable Engineering Standards identified
+        - Risks, assumptions and constraints documented
+        - Specification ready for Planning

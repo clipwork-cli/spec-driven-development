@@ -1,0 +1,136 @@
+name: Implementation Planning
+description: Produce an executable implementation package from an approved Specification. This issue is owned by the Planner.
+title: '[Planning]: <Business Capability>'
+labels:
+  - planning
+  - planner
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # Implementation Planning
+
+        This issue transforms an approved Specification into an executable implementation package.
+
+        The Planner defines HOW engineering work should be executed.
+
+        This issue does not implement code.
+
+  - type: input
+    id: capability
+    attributes:
+      label: Business Capability
+      placeholder: Asset Search
+    validations:
+      required: true
+
+  - type: input
+    id: specification
+    attributes:
+      label: Specification
+      description: Reference the approved Specification.
+    validations:
+      required: true
+
+  - type: textarea
+    id: engineering_standards
+    attributes:
+      label: Applicable Engineering Standards
+      description: |
+        List applicable Engineering Standards.
+
+        Example
+
+        Oracle → PostgreSQL
+
+        Modernization
+
+        Testcontainers
+
+  - type: textarea
+    id: assumptions
+    attributes:
+      label: Assumptions
+      description: |
+        Document planning assumptions.
+
+  - type: textarea
+    id: constraints
+    attributes:
+      label: Engineering Constraints
+      description: |
+        Repository constraints
+
+        Technical constraints
+
+        Business constraints
+
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies
+      description: |
+        Internal dependencies
+
+        External dependencies
+
+        Manual engineering activities
+
+  - type: textarea
+    id: risks
+    attributes:
+      label: Engineering Risks
+      description: |
+        Implementation risks
+
+        Repository risks
+
+        Deployment risks
+
+  - type: markdown
+    attributes:
+      value: |
+        ## Planner Deliverables
+
+        Produce
+
+        ```
+        plan.md
+
+        tasks.md
+
+        test-strategy.md
+
+        rollback.md
+        ```
+
+  - type: markdown
+    attributes:
+      value: |
+        ## Planning Principles
+
+        - Preserve repository behaviour
+        - Deliver incrementally
+        - Produce independently reviewable Work Items
+        - Produce reviewable Pull Requests
+        - Follow Engineering Standards
+
+  - type: markdown
+    attributes:
+      value: |
+        ## Success Criteria
+
+        ✓ Implementation Strategy completed
+
+        ✓ Phases defined
+
+        ✓ Execution Work Items generated
+
+        ✓ Execution Order defined
+
+        ✓ Testing Strategy completed
+
+        ✓ Rollback Strategy completed
+
+        ✓ Implementation Package ready for Developer

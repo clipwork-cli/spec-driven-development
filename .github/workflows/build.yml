@@ -1,0 +1,231 @@
+name: Build
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+    branches:
+      - main
+      - master
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Restore NuGet packages
+        run: nuget restore Ravnen.sln
+
+      - name: Build solution
+        run: msbuild Ravnen.sln /p:Configuration=Release /p:Platform="Any CPU" /p:RestorePackages=false /m
+
+  functional-tests:
+    runs-on: windows-latest
+    needs: build
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup MSBuild
+        uses: microsoft/setup-msbuild@v2
+
+      - name: Setup .NET SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.x'
+
+      # Restore packages.config dependencies for non-SDK projects (DataAccess.Mk2, etc.)
+      - name: Restore NuGet packages (packages.config)
+        run: nuget restore Ravnen.sln
+
+      # Restore PackageReference dependencies for SDK-style test projects
+      - name: Restore NuGet packages (SDK)
+        run: |
+          dotnet restore Ravnen.FunctionalTests\Ravnen.FunctionalTests.csproj
+          dotnet restore Ravnen.ReportAdministration.FunctionalTests\Ravnen.ReportAdministration.FunctionalTests.csproj
+          dotnet restore Ravnen.ChangeHistory.FunctionalTests\Ravnen.ChangeHistory.FunctionalTests.csproj
+          dotnet restore Ravnen.SubscriptionAdministration.FunctionalTests\Ravnen.SubscriptionAdministration.FunctionalTests.csproj
+          dotnet restore Ravnen.ReferenceData.FunctionalTests\Ravnen.ReferenceData.FunctionalTests.csproj
+          dotnet restore Ravnen.ScenarioManagement.FunctionalTests\Ravnen.ScenarioManagement.FunctionalTests.csproj
+          dotnet restore Ravnen.TimeSeries.FunctionalTests\Ravnen.TimeSeries.FunctionalTests.csproj
+
+      # Build the full solution first so DataAccess.Mk2.dll is available to the test runner
+      - name: Build solution (Release)
+        run: msbuild Ravnen.sln /p:Configuration=Release /p:Platform="Any CPU" /p:RestorePackages=false /m
+
+      # windows-latest ships with PostgreSQL 14 (service disabled by default).
+      # Docker Engine on Windows Server cannot run Linux containers, so we use
+      # the pre-installed PostgreSQL instead.
+      # Credentials from runner image docs: user=postgres, password=root
+      # https://github.com/actions/runner-images/blob/main/images/windows/Windows2022-Readme.md
+      - name: Provision PostgreSQL for tests
+        shell: pwsh
+        run: |
+          # Locate service dynamically — name varies by runner image version
+          $svc = Get-Service -Name "postgresql*" | Select-Object -First 1
+          if (-not $svc) { throw "No PostgreSQL service found on this runner." }
+          Write-Host "Found service: $($svc.Name)"
+          Set-Service -Name $svc.Name -StartupType Manual
+          Start-Service -Name $svc.Name
+          Write-Host "Service started."
+
+          # Locate psql — prefer $env:PGBIN, fall back to searching Program Files
+          if ($env:PGBIN -and (Test-Path "$env:PGBIN\psql.exe")) {
+            $psql = "$env:PGBIN\psql.exe"
+          } else {
+            $psql = Get-ChildItem "C:\Program Files\PostgreSQL" -Recurse -Filter "psql.exe" |
+                    Select-Object -First 1 -ExpandProperty FullName
+          }
+          Write-Host "Using psql: $psql"
+
+          $env:PGPASSWORD = "root"
+          # Mirror local docker-compose setup where POSTGRES_USER has superuser privileges.
+          # Some functional tests provision child roles with NOSUPERUSER/NOBYPASSRLS flags, which requires a superuser.
+          & $psql -U postgres -c "DO `$`$ BEGIN IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname='ravnen') THEN CREATE ROLE ravnen LOGIN SUPERUSER BYPASSRLS CREATEROLE PASSWORD 'ravnen_test'; ELSE ALTER ROLE ravnen SUPERUSER BYPASSRLS CREATEROLE; END IF; END `$`$;"
+          & $psql -U postgres -c "SELECT pg_terminate_backend(pid) FROM pg_stat_activity WHERE datname='ravnen_test';"
+          & $psql -U postgres -c "DROP DATABASE IF EXISTS ravnen_test;"
+          & $psql -U postgres -c "CREATE DATABASE ravnen_test OWNER ravnen;"
+          & $psql -U postgres -c "GRANT ALL PRIVILEGES ON DATABASE ravnen_test TO ravnen;"
+          & $psql -U postgres -c "SELECT version();"
+
+      - name: Run functional tests
+        shell: pwsh
+        run: |
+          dotnet test Ravnen.FunctionalTests\Ravnen.FunctionalTests.csproj `
+            --configuration Release `
+            --no-build `
+            --logger "trx;LogFileName=functional-tests.trx" `
+            --results-directory TestResults `
+            --verbosity normal
+        timeout-minutes: 15
+        env:
+          DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+          PG_HOST:     localhost
+          PG_PORT:     5432
+          PG_DB:       ravnen_test
+          PG_USER:     ravnen
+          PG_PASSWORD: ravnen_test
+
+      - name: Run ReportAdministration functional tests
+        shell: pwsh
+        run: |
+          dotnet test Ravnen.ReportAdministration.FunctionalTests\Ravnen.ReportAdministration.FunctionalTests.csproj `
+            --configuration Release `
+            --no-build `
+            --logger "trx;LogFileName=report-administration-functional-tests.trx" `
+            --results-directory TestResults `
+            --verbosity normal
+        timeout-minutes: 15
+        env:
+          DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+          PG_HOST:     localhost
+          PG_PORT:     5432
+          PG_DB:       ravnen_test
+          PG_USER:     ravnen
+          PG_PASSWORD: ravnen_test
+
+      - name: Run ChangeHistory functional tests
+        shell: pwsh
+        run: |
+          dotnet test Ravnen.ChangeHistory.FunctionalTests\Ravnen.ChangeHistory.FunctionalTests.csproj `
+            --configuration Release `
+            --no-build `
+            --logger "trx;LogFileName=change-history-functional-tests.trx" `
+            --results-directory TestResults `
+            --verbosity normal
+        timeout-minutes: 15
+        env:
+          DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+          PG_HOST:     localhost
+          PG_PORT:     5432
+          PG_DB:       ravnen_test
+          PG_USER:     ravnen
+          PG_PASSWORD: ravnen_test
+
+      - name: Run SubscriptionAdministration functional tests
+        shell: pwsh
+        run: |
+          dotnet test Ravnen.SubscriptionAdministration.FunctionalTests\Ravnen.SubscriptionAdministration.FunctionalTests.csproj `
+            --configuration Release `
+            --no-build `
+            --logger "trx;LogFileName=subscription-administration-functional-tests.trx" `
+            --results-directory TestResults `
+            --verbosity normal
+        timeout-minutes: 15
+        env:
+          DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+          PG_HOST:     localhost
+          PG_PORT:     5432
+          PG_DB:       ravnen_test
+          PG_USER:     ravnen
+          PG_PASSWORD: ravnen_test
+
+      - name: Run ReferenceData functional tests
+        shell: pwsh
+        run: |
+          dotnet test Ravnen.ReferenceData.FunctionalTests\Ravnen.ReferenceData.FunctionalTests.csproj `
+            --configuration Release `
+            --no-build `
+            --logger "trx;LogFileName=reference-data-functional-tests.trx" `
+            --results-directory TestResults `
+            --verbosity normal
+        timeout-minutes: 15
+        env:
+          DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+          PG_HOST:     localhost
+          PG_PORT:     5432
+          PG_DB:       ravnen_test
+          PG_USER:     ravnen
+          PG_PASSWORD: ravnen_test
+
+      - name: Run ScenarioManagement functional tests
+        shell: pwsh
+        run: |
+          dotnet test Ravnen.ScenarioManagement.FunctionalTests\Ravnen.ScenarioManagement.FunctionalTests.csproj `
+            --configuration Release `
+            --no-build `
+            --logger "trx;LogFileName=scenario-management-functional-tests.trx" `
+            --results-directory TestResults `
+            --verbosity normal
+        timeout-minutes: 15
+        env:
+          DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+          PG_HOST:     localhost
+          PG_PORT:     5432
+          PG_DB:       ravnen_test
+          PG_USER:     ravnen
+          PG_PASSWORD: ravnen_test
+
+      - name: Run TimeSeries functional tests
+        shell: pwsh
+        run: |
+          dotnet test Ravnen.TimeSeries.FunctionalTests\Ravnen.TimeSeries.FunctionalTests.csproj `
+            --configuration Release `
+            --no-build `
+            --logger "trx;LogFileName=time-series-functional-tests.trx" `
+            --results-directory TestResults `
+            --verbosity normal
+        timeout-minutes: 15
+        env:
+          DOTNET_SKIP_FIRST_TIME_EXPERIENCE: true
+          PG_HOST:     localhost
+          PG_PORT:     5432
+          PG_DB:       ravnen_test
+          PG_USER:     ravnen
+          PG_PASSWORD: ravnen_test
+
+      - name: Publish test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: functional-test-results
+          path: TestResults\*.trx

@@ -1,0 +1,118 @@
+name: Implementation
+description: Execute one approved Execution Work Item from the implementation plan. This issue is owned by the Developer.
+title: '[Implementation]: <Execution Work Item>'
+labels:
+  - implementation
+  - developer
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # Implementation
+
+        This issue implements a single approved Execution Work Item.
+
+        The Developer implements the work exactly as planned.
+
+        Architectural decisions must not be made during implementation.
+
+  - type: input
+    id: capability
+    attributes:
+      label: Business Capability
+      placeholder: Asset Search
+    validations:
+      required: true
+
+  - type: input
+    id: workitem
+    attributes:
+      label: Execution Work Item
+      placeholder: P2-003 - Replace OracleConnection with NpgsqlConnection
+    validations:
+      required: true
+
+  - type: input
+    id: planning_issue
+    attributes:
+      label: Planning Issue
+      description: Reference the approved Planning Issue.
+    validations:
+      required: true
+
+  - type: textarea
+    id: engineering_standards
+    attributes:
+      label: Applicable Engineering Standards
+      description: |
+        List the Engineering Standards that govern this implementation.
+
+  - type: textarea
+    id: assumptions
+    attributes:
+      label: Assumptions
+      description: |
+        Document implementation assumptions or dependencies.
+
+  - type: markdown
+    attributes:
+      value: |
+        ## Developer Deliverables
+
+        Produce
+
+        ```
+        Source Code
+
+        Updated Tests
+
+        Updated Documentation
+
+        Validation Evidence
+
+        Pull Request
+        ```
+
+  - type: markdown
+    attributes:
+      value: |
+        ## Implementation Rules
+
+        - Implement one Execution Work Item only.
+        - Preserve repository behaviour.
+        - Follow Repository Context.
+        - Follow Runtime Context.
+        - Follow Engineering Standards.
+        - Do not expand scope.
+        - Do not redesign architecture.
+
+  - type: markdown
+    attributes:
+      value: |
+        ## Validation
+
+        Before requesting review
+
+        ✓ Build succeeds
+
+        ✓ Tests pass
+
+        ✓ Documentation updated
+
+        ✓ Acceptance Criteria satisfied
+
+        ✓ Validation evidence produced
+
+  - type: markdown
+    attributes:
+      value: |
+        ## Success Criteria
+
+        ✓ One Execution Work Item completed
+
+        ✓ Pull Request created
+
+        ✓ Validation evidence attached
+
+        ✓ Ready for Reviewer
